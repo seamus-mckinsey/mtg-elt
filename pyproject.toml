@@ -8,6 +8,7 @@ dependencies = [
     "dbt>=1.0.0.38.35",
     "dbt-duckdb>=1.9.2",
     "duckdb>=1.2.1",
+    "pre-commit>=4.2.0",
     "pylint>=3.3.6",
     "ruff>=0.11.2",
 ]
