@@ -11,3 +11,21 @@ wheels/
 
 # logs
 logs/
+
+# data
+.dlt/
+
+# env
+.env
+
+# duckdb
+mtg.db
+mtg.db.wal
+mtg.db.lock
+
+# data
+*.parquet
+data/**/*.parquet
+data/edhrec/all_cards/*.parquet
+data/edhrec/commanders/*.parquet
+*.duckdb

@@ -7,8 +7,14 @@ requires-python = ">=3.12"
 dependencies = [
     "dbt>=1.0.0.38.35",
     "dbt-duckdb>=1.9.2",
+    "dlt[duckdb,motherduck,sql-database]>=1.9.0",
     "duckdb>=1.2.1",
+    "duckdb-engine>=0.17.0",
+    "pandas>=2.2.3",
     "pre-commit>=4.2.0",
+    "pyedhrec>=0.0.2",
     "pylint>=3.3.6",
+    "requests>=2.32.3",
     "ruff>=0.11.2",
+    "tenacity>=9.1.2",
 ]
