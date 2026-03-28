@@ -19,6 +19,9 @@ logs/
 .env
 
 # duckdb
+db/*.db
+db/*.db.wal
+db/*.db.lock
 mtg.db
 mtg.db.wal
 mtg.db.lock

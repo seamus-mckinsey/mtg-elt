@@ -122,7 +122,7 @@ def run_pipeline():
 
     local_pipeline = dlt.pipeline(
         pipeline_name="scryfall_cards_local",
-        destination=dlt.destinations.duckdb("scryfall.db"),
+        destination=dlt.destinations.duckdb("db/scryfall.db"),
     )
 
     # Instantiate the source once
