@@ -1,0 +1,11 @@
+mtg_elt:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: ../db/edhrec.db
+      schema: main
+      attach:
+        - path: ../db/scryfall.db
+          alias: scryfall
+          read_only: true

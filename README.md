@@ -35,10 +35,18 @@ Cards are filtered to those **legal in Commander** format and available in **pap
 
 ## Setup
 
-**Prerequisites:** Python 3.12+, [uv](https://github.com/astral-sh/uv)
+**Prerequisites:** Python 3.12+, [uv](https://github.com/astral-sh/uv), [just](https://github.com/casey/just)
+
+Install `just` via your system package manager:
 
 ```bash
-uv sync
+brew install just        # macOS
+apt install just         # Debian/Ubuntu
+winget install Casey.Just  # Windows
+```
+
+```bash
+just setup
 ```
 
 **Credentials:** dlt reads secrets from `.dlt/secrets.toml`. Create it with your MotherDuck token:
