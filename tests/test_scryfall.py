@@ -16,7 +16,9 @@ def test_get_default_cards_uri_returns_uri():
 
 
 def test_get_default_cards_uri_missing_raises():
-    bulk_data = {"data": [{"name": "All Cards", "download_uri": "https://example.com/all.json"}]}
+    bulk_data = {
+        "data": [{"name": "All Cards", "download_uri": "https://example.com/all.json"}]
+    }
     with pytest.raises(ValueError, match="Oracle Cards data not found"):
         get_default_cards_uri(bulk_data)
 
