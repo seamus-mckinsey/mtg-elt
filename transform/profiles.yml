@@ -9,3 +9,7 @@ mtg_elt:
         - path: ../db/scryfall.db
           alias: scryfall
           read_only: true
+    ci:
+      type: duckdb
+      path: ":memory:"
+      schema: main
