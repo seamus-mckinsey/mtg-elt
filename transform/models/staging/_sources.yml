@@ -1,0 +1,89 @@
+version: 2
+
+sources:
+  - name: scryfall
+    database: scryfall
+    schema: scryfall
+    description: "Scryfall Oracle card data loaded by load/scryfall.py via dlt"
+    tables:
+      - name: oracle_cards
+        description: "One row per unique Oracle card legal in Commander format, paper only"
+        columns:
+          - name: oracle_id
+            description: "Scryfall Oracle ID (primary key)"
+          - name: name
+            description: "Card name"
+          - name: mana_cost
+            description: "Full mana cost string, e.g. {2}{W}{U}"
+          - name: cmc
+            description: "Converted mana cost (numeric)"
+          - name: type_line
+            description: "Full type line, e.g. Legendary Creature — Phyrexian Praetor"
+          - name: oracle_text
+            description: "Rules text"
+          - name: power
+            description: "Power (creatures only)"
+          - name: toughness
+            description: "Toughness (creatures only)"
+          - name: rarity
+            description: "common, uncommon, rare, or mythic"
+          - name: set
+            description: "Three-letter set code"
+          - name: set_name
+            description: "Full set name"
+          - name: edhrec_rank
+            description: "EDHRec popularity rank (lower = more popular)"
+          - name: released_at
+            description: "First print release date"
+
+  - name: edhrec
+    schema: edhrec
+    description: "EDHRec commander enrichment data loaded by load/edhrec.py via dlt"
+    tables:
+      - name: commanders
+        description: "Commander-eligible cards enriched with EDHRec analytics. All base oracle_cards fields plus dlt metadata."
+        columns:
+          - name: oracle_id
+            description: "Scryfall Oracle ID (primary key)"
+          - name: name
+            description: "Card name"
+          - name: _dlt_id
+            description: "dlt internal row ID — used as FK target for child tables"
+          - name: _dlt_load_id
+            description: "dlt load batch ID"
+
+      # dlt-normalized child tables for card recommendation lists.
+      #
+      # Naming convention: commanders__<field>__<normalized_header>
+      #   field           = Python field name set in load/edhrec.py
+      #   normalized_header = EDHRec section header, lowercased, spaces→underscores
+      #
+      # Each row has _dlt_parent_id → commanders._dlt_id
+      #
+      # If the actual table names differ after loading, run:
+      #   analyses/explore_edhrec_schema.sql in DuckDB to discover them.
+
+      - name: commanders__high_synergy_cards__high_synergy_cards
+        description: "Cards with highest synergy score for each commander"
+      - name: commanders__top_cards__top_cards
+        description: "Most-included cards overall for each commander"
+      - name: commanders__top_creatures__creatures
+        description: "Top creature recommendations per commander"
+      - name: commanders__top_instants__instants
+        description: "Top instant recommendations per commander"
+      - name: commanders__top_sorceries__sorceries
+        description: "Top sorcery recommendations per commander"
+      - name: commanders__top_enchantments__enchantments
+        description: "Top enchantment recommendations per commander"
+      - name: commanders__top_artifacts__utility_artifacts
+        description: "Top utility artifact recommendations per commander"
+      - name: commanders__top_mana_artifacts__mana_artifacts
+        description: "Top mana artifact recommendations per commander"
+      - name: commanders__top_planeswalkers__planeswalkers
+        description: "Top planeswalker recommendations per commander"
+      - name: commanders__top_utility_lands__utility_lands
+        description: "Top utility land recommendations per commander"
+      - name: commanders__top_lands__lands
+        description: "Top land recommendations per commander"
+      - name: commanders__new_cards__new_cards
+        description: "Recently released cards recommended per commander"
