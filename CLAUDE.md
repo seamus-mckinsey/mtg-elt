@@ -5,9 +5,9 @@
 ELT pipeline for Magic: The Gathering Commander data.
 
 ```
-Scryfall API → load/scryfall.py (dlt) → DuckDB / MotherDuck (scryfall.oracle_cards)
-                                                  ↓
-               load/edhrec.py (dlt)  → MotherDuck (edhrec.commanders)
+Scryfall API → load/scryfall.py (dlt) → DuckDB (db/scryfall.db) + MotherDuck (scryfall.oracle_cards)
+                                                  ↓ (reads db/scryfall.db)
+               load/edhrec.py (dlt)  → DuckDB (db/edhrec.db) + MotherDuck (edhrec.commanders)
                                                   ↓
                transform/ (dbt)      → Transformed models (not yet built)
 ```

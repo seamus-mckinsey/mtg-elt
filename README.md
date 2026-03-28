@@ -11,9 +11,11 @@ An ELT pipeline for collecting and transforming Magic: The Gathering card data. 
 **Pipeline flow:**
 
 ```
-Scryfall API  ──► load/scryfall.py ──► scryfall.db (DuckDB) + MotherDuck (scryfall dataset)
+Scryfall API  ──► load/scryfall.py ──► db/scryfall.db (DuckDB) + MotherDuck (scryfall dataset)
                                                   │
-EDHRec API    ──► load/edhrec.py ───► ───────────┘──► MotherDuck (edhrec dataset)
+                                       db/scryfall.db
+                                                  │
+EDHRec API    ──► load/edhrec.py ───► db/edhrec.db (DuckDB) + MotherDuck (edhrec dataset)
                                                   │
                                         transform/ (dbt)
 ```
@@ -59,10 +61,12 @@ Fetches the Oracle Cards bulk export from Scryfall, filters to Commander-legal p
 **2. Load EDHRec enrichment data**
 
 ```bash
-python load/edhrec.py
+python load/edhrec.py                        # write to both local and MotherDuck (default)
+python load/edhrec.py --destination local    # local DuckDB only (no credentials needed)
+python load/edhrec.py --destination cloud    # MotherDuck only
 ```
 
-Reads `oracle_cards` from MotherDuck, identifies commanders, and enriches each with EDHRec data: commander stats, high-synergy cards, top cards by type (creatures, instants, sorceries, enchantments, artifacts, lands, planeswalkers), and utility lands. Results load to MotherDuck (`edhrec.commanders`). API calls use retry logic with exponential backoff.
+Reads `oracle_cards` from local `db/scryfall.db`, identifies commanders, and enriches each with EDHRec data: commander stats, high-synergy cards, top cards by type (creatures, instants, sorceries, enchantments, artifacts, lands, planeswalkers), and utility lands. Results load to `db/edhrec.db` and/or MotherDuck (`edhrec.commanders`). API calls use retry logic with exponential backoff. Enrichment runs once and is cached, so writing to both destinations doesn't double the API calls.
 
 **3. Transform with dbt**
 
